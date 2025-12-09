@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sascha Streamer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #00ff00 0%, #00aa00 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .pepe-decoration {
+            position: fixed;
+            width: 80px;
+            height: 80px;
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><ellipse cx="50" cy="35" rx="35" ry="30" fill="%2300ff00"/><ellipse cx="35" cy="30" rx="12" ry="15" fill="white"/><ellipse cx="65" cy="30" rx="12" ry="15" fill="white"/><circle cx="35" cy="32" r="7" fill="%23333"/><circle cx="65" cy="32" r="7" fill="%23333"/><ellipse cx="50" cy="50" rx="20" ry="8" fill="%23ff6600"/><rect x="10" y="60" width="80" height="40" rx="10" fill="%2300ff00"/></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            pointer-events: none;
+            opacity: 0.3;
+            z-index: 1;
+        }
+
+        .pepe-1 { top: 10%; left: 5%; animation: float 6s ease-in-out infinite; }
+        .pepe-2 { top: 20%; right: 8%; animation: float 7s ease-in-out infinite 1s; }
+        .pepe-3 { bottom: 15%; left: 10%; animation: float 8s ease-in-out infinite 2s; }
+        .pepe-4 { bottom: 25%; right: 5%; animation: float 6.5s ease-in-out infinite 1.5s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 1200px;
+            width: 100%;
+            padding: 40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 2.5em;
+            position: relative;
+        }
+
+        h1::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><ellipse cx="50" cy="35" rx="35" ry="30" fill="%2300ff00"/><ellipse cx="35" cy="30" rx="12" ry="15" fill="white"/><ellipse cx="65" cy="30" rx="12" ry="15" fill="white"/><circle cx="35" cy="32" r="7" fill="%23333"/><circle cx="65" cy="32" r="7" fill="%23333"/><ellipse cx="50" cy="50" rx="20" ry="8" fill="%23ff6600"/><rect x="10" y="60" width="80" height="40" rx="10" fill="%2300ff00"/></svg>');
+            background-size: contain;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 40px;
+            height: 40px;
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><ellipse cx="50" cy="35" rx="35" ry="30" fill="%2300ff00"/><ellipse cx="35" cy="30" rx="12" ry="15" fill="white"/><ellipse cx="65" cy="30" rx="12" ry="15" fill="white"/><circle cx="35" cy="32" r="7" fill="%23333"/><circle cx="65" cy="32" r="7" fill="%23333"/><ellipse cx="50" cy="50" rx="20" ry="8" fill="%23ff6600"/><rect x="10" y="60" width="80" height="40" rx="10" fill="%2300ff00"/></svg>');
+            background-size: contain;
+        }
+
+        .input-section {
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            color: #555;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #00ff00;
+        }
+
+        button {
+            background: linear-gradient(135deg, #00ff00 0%, #00cc00 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+            margin-top: 10px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 255, 0, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .video-container {
+            margin-top: 30px;
+            display: none;
+            background: #000;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .video-container iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+            border-radius: 10px;
+        }
+
+        video {
+            width: 100%;
+            height: auto;
+            display: block;
+            max-height: 600px;
+        }
+
+        .error {
+            background: #fee;
+            color: #c33;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .success {
+            background: #d4f4dd;
+            color: #006600;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .loading {
+            text-align: center;
+            color: #00aa00;
+            font-weight: 600;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .share-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .share-section h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .share-link {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            word-break: break-all;
+            font-family: monospace;
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+        }
+
+        .copy-btn {
+            background: #00dd00;
+            width: auto;
+            padding: 10px 20px;
+            margin-top: 10px;
+        }
+
+        .copy-btn:hover {
+            background: #00bb00;
+        }
+
+        .info {
+            background: #d4f4dd;
+            color: #006600;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            line-height: 1.6;
+        }
+
+        .info a {
+            color: #004400;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="pepe-decoration pepe-1"></div>
+    <div class="pepe-decoration pepe-2"></div>
+    <div class="pepe-decoration pepe-3"></div>
+    <div class="pepe-decoration pepe-4"></div>
+    
+    <div class="container">
+        <h1>Sascha Streamer</h1>
+        
+        <div class="input-section">
+            <label for="videoUrl">Video Link (Google Drive, Filemoon, Vidmoly, YouTube, Vimeo):</label>
+            <input type="text" id="videoUrl" placeholder="https://drive.google.com/... oder https://filemoon.sx/... oder andere...">
+            <button id="loadBtn" onclick="loadVideo()">Video laden</button>
+        </div>
+
+        <div class="loading" id="loading">
+            Video wird geladen...
+        </div>
+
+        <div class="error" id="error"></div>
+        <div class="success" id="success"></div>
+
+        <div class="video-container" id="videoContainer"></div>
+
+        <div class="share-section" id="shareSection">
+            <h3>Video Link zum Teilen:</h3>
+            <div class="share-link" id="shareLink"></div>
+            <button class="copy-btn" onclick="copyLink()">Link kopieren</button>
+        </div>
+    </div>
+
+    <script>
+        function showError(msg) {
+            const err = document.getElementById('error');
+            err.textContent = '❌ ' + msg;
+            err.style.display = 'block';
+            document.getElementById('success').style.display = 'none';
+        }
+
+        function showSuccess(msg) {
+            const success = document.getElementById('success');
+            success.textContent = '✅ ' + msg;
+            success.style.display = 'block';
+            document.getElementById('error').style.display = 'none';
+        }
+
+        function hideMessages() {
+            document.getElementById('error').style.display = 'none';
+            document.getElementById('success').style.display = 'none';
+        }
+
+        function extractStreamableId(url) {
+            const match = url.match(/streamable\.com\/([a-zA-Z0-9]+)/i);
+            return match ? match[1] : null;
+        }
+
+        function extractYouTubeId(url) {
+            const patterns = [
+                /youtube\.com\/watch\?v=([^&\s]+)/i,
+                /youtu\.be\/([^?\s]+)/i,
+                /youtube\.com\/embed\/([^?\s]+)/i
+            ];
+            for (let pattern of patterns) {
+                const match = url.match(pattern);
+                if (match) return match[1];
+            }
+            return null;
+        }
+
+        function extractGoogleDriveId(url) {
+            const patterns = [
+                /drive\.google\.com\/file\/d\/([^\/\?]+)/i,
+                /drive\.google\.com\/open\?id=([^&\s]+)/i,
+                /\/d\/([^\/\?]+)/i
+            ];
+            
+            for (let pattern of patterns) {
+                const match = url.match(pattern);
+                if (match && match[1]) {
+                    return match[1];
+                }
+            }
+            return null;
+        }
+
+        function extractVimeoId(url) {
+            const match = url.match(/vimeo\.com\/(\d+)/i);
+            return match ? match[1] : null;
+        }
+
+        function extractFilemoonId(url) {
+            const patterns = [
+                /filemoon\.sx\/e\/([a-zA-Z0-9]+)/i,
+                /filemoon\.sx\/d\/([a-zA-Z0-9]+)/i
+            ];
+            for (let pattern of patterns) {
+                const match = url.match(pattern);
+                if (match) return match[1];
+            }
+            return null;
+        }
+
+        function extractVidmolyId(url) {
+            const patterns = [
+                /vidmoly\.to\/embed-([a-zA-Z0-9]+)/i,
+                /vidmoly\.to\/([a-zA-Z0-9]+)\.html/i,
+                /vidmoly\.to\/([a-zA-Z0-9]+)/i,
+                /vidmoly\.me\/embed-([a-zA-Z0-9]+)/i,
+                /vidmoly\.me\/([a-zA-Z0-9]+)\.html/i,
+                /vidmoly\.me\/([a-zA-Z0-9]+)/i,
+                /vidmoly\.net\/embed-([a-zA-Z0-9]+)/i,
+                /vidmoly\.net\/([a-zA-Z0-9]+)\.html/i,
+                /vidmoly\.net\/([a-zA-Z0-9]+)/i
+            ];
+            for (let pattern of patterns) {
+                const match = url.match(pattern);
+                if (match) return match[1];
+            }
+            return null;
+        }
+
+        function loadVideo() {
+            hideMessages();
+            const url = document.getElementById('videoUrl').value.trim();
+            
+            if (!url) {
+                showError('Bitte gib einen Video Link ein!');
+                return;
+            }
+
+            const loadBtn = document.getElementById('loadBtn');
+            loadBtn.disabled = true;
+            loadBtn.textContent = 'Lädt...';
+
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('videoContainer').style.display = 'none';
+
+            const container = document.getElementById('videoContainer');
+            let embedUrl = null;
+            let platform = '';
+            
+            // Check Filemoon
+            if (url.includes('filemoon.sx')) {
+                const id = extractFilemoonId(url);
+                if (id) {
+                    embedUrl = `https://filemoon.sx/e/${id}`;
+                    platform = 'Filemoon';
+                }
+            }
+            // Check Vidmoly
+            else if (url.includes('vidmoly.to') || url.includes('vidmoly.me') || url.includes('vidmoly.net')) {
+                const id = extractVidmolyId(url);
+                if (id) {
+                    // If already an embed link, use it directly
+                    if (url.includes('/embed-')) {
+                        embedUrl = url;
+                    } else {
+                        embedUrl = `https://vidmoly.net/embed-${id}.html`;
+                    }
+                    platform = 'Vidmoly';
+                }
+            }
+            // Check Streamable
+            else if (url.includes('streamable.com')) {
+                const id = extractStreamableId(url);
+                if (id) {
+                    embedUrl = `https://streamable.com/e/${id}`;
+                    platform = 'Streamable';
+                }
+            }
+            // Check YouTube
+            else if (url.includes('youtube.com') || url.includes('youtu.be')) {
+                const id = extractYouTubeId(url);
+                if (id) {
+                    embedUrl = `https://www.youtube.com/embed/${id}`;
+                    platform = 'YouTube';
+                }
+            }
+            // Check Vimeo
+            else if (url.includes('vimeo.com')) {
+                const id = extractVimeoId(url);
+                if (id) {
+                    embedUrl = `https://player.vimeo.com/video/${id}`;
+                    platform = 'Vimeo';
+                }
+            }
+
+            if (!embedUrl) {
+                showError('Ungültiger Link! Bitte nutze Filemoon, Vidmoly, Streamable, YouTube oder Vimeo.');
+                loadBtn.disabled = false;
+                loadBtn.textContent = 'Video laden';
+                document.getElementById('loading').style.display = 'none';
+                return;
+            }
+
+            container.innerHTML = `
+                <iframe 
+                    src="${embedUrl}" 
+                    frameborder="0" 
+                    width="100%"
+                    height="100%"
+                    allowfullscreen
+                    allow="autoplay; fullscreen; picture-in-picture"
+                    scrolling="no"
+                ></iframe>
+            `;
+            
+            setTimeout(() => {
+                document.getElementById('loading').style.display = 'none';
+                container.style.display = 'block';
+                
+                const shareSection = document.getElementById('shareSection');
+                const shareLink = document.getElementById('shareLink');
+                shareLink.textContent = url;
+                shareSection.style.display = 'block';
+                
+                showSuccess(`${platform} Video geladen!`);
+                
+                loadBtn.disabled = false;
+                loadBtn.textContent = 'Video laden';
+            }, 1000);
+        }
+
+        function copyLink() {
+            const link = document.getElementById('shareLink').textContent;
+            navigator.clipboard.writeText(link).then(() => {
+                alert('✅ Link wurde kopiert!');
+            }).catch(() => {
+                alert('Bitte kopiere den Link manuell');
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const videoParam = params.get('v');
+            
+            if (videoParam) {
+                try {
+                    const decodedUrl = atob(videoParam);
+                    document.getElementById('videoUrl').value = decodedUrl;
+                    setTimeout(() => loadVideo(), 500);
+                } catch (e) {
+                    // Silent fail
+                }
+            }
+        });
+    </script>
+</body>
+</html>
